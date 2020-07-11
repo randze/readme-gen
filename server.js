@@ -2,9 +2,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const fetch = require('node-fetch')
 
-// let url = `https://api.github.com/users/${username}`
 
-// const data = await fetch(url).then(data => data.json())
 
 console.clear()
 console.log(`
@@ -69,6 +67,10 @@ async function main(){
     // create filename with no spaces.
     const filename = response.title.toLowerCase().split(' ').join('-')+'.md';
 
+    // fetch github user data
+    let url = `https://api.github.com/users/${response.username}`
+    const data = await fetch(url).then(data => data.json())
+
     // appends README input
     let readmeOutput =
 `# ${response.title}
@@ -80,7 +82,7 @@ ${response.description}
 
 ${response.installation ? '[Installation](#installation)' : ''}
 
-${response.installation ? '[Usage](#usage)' : ''}
+${response.usage ? '[Usage](#usage)' : ''}
 
 ${response.license ? '[License](#license)' : ''}
 
@@ -92,31 +94,29 @@ ${response.tests ? '[Tests](#tests)' : ''}
 
 
 ## Installation
+${response.installation}
 
 ## Usage
+${response.usage}
 
 ## License
+${response.license}
 
 ## Contributing
+${response.contributing}
 
 ## Test
+${response.tests}
 
 ## Questions
+![gitpic](${data.avatar_url}?raw=true)
+For any questions, they can be can be sent to the repo owner [${data.login}](${data.html_url})
 
-## Links
-
-···· Questions
 `
     console.log('response:', response)
 
     writeMyReadme(filename,readmeOutput)
 }
-
-
-// // async function appendInfo( data ) {
-
-// //   if () {}
-// // }
 
 async function writeMyReadme(filename,output) {
     await fs.writeFile(filename,output,function(err){
