@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const fetch = require('node-fetch')
 
+// inquirer questions
 const questions = [
     {
         type: 'input',
@@ -25,7 +26,7 @@ const questions = [
     },
     {
         type: 'input',
-        message: 'Enter directions of how to use your app.\n',
+        message: 'Enter how to use your app.\n',
         name: 'usage',
     },
     {
@@ -60,8 +61,6 @@ console.log(`
 `)
 
 async function main(){
-
-
     var response = await inquirer.prompt(questions)
 
     // create filename with no spaces.
@@ -126,11 +125,11 @@ For any questions, they can be can be sent to the repo owner [${data.login}](${d
 
 <a href="url"><img src="${data.avatar_url}" align="left" height="100" width="100" ></a>
 `
-    console.log('response:', response)
-
+    // console.log('response:', response)
     writeMyReadme(filename,readmeOutput)
 }
 
+// function to append response and create the readme file
 async function writeMyReadme(filename,output) {
     await fs.writeFile(filename,output,function(err){
         if (err){
